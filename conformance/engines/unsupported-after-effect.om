@@ -1,0 +1,5 @@
+print("this should never run during engine compilation")
+
+record Profile {
+    name: Text,
+}

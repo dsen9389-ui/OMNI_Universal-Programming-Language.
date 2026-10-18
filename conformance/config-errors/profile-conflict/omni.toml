@@ -1,0 +1,3 @@
+[build]
+profile = "web-v1"
+target = "embedded"

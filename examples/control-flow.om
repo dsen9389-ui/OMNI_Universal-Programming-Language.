@@ -1,0 +1,19 @@
+var number = 0
+
+while number < 8 {
+    number = number + 1
+
+    if number == 2 {
+        continue
+    }
+
+    if number == 6 {
+        break
+    }
+
+    print(number)
+}
+
+for letter in "OMNI" {
+    print(letter)
+}

@@ -1,0 +1,5 @@
+import "../../stdlib/v1/data.om" as data
+
+let readings: List[Int] = [4, 7, 11, 16]
+print("Total =", data.total(readings))
+print("Readings above 10 =", data.count_above(readings, 10))

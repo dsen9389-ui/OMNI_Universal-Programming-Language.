@@ -1,0 +1,9 @@
+# Small, reusable helpers for scripts with explicit run settings.
+record RunOptions {
+    dryRun: Bool,
+    attempts: Int,
+}
+
+fn can_run(options: RunOptions) -> Bool {
+    return !options.dryRun and options.attempts > 0
+}

@@ -1,0 +1,18 @@
+# Small typed list operations for application data processing.
+fn total(values: List[Int]) -> Int {
+    var sum: Int = 0
+    for value in values {
+        sum = sum + value
+    }
+    return sum
+}
+
+fn count_above(values: List[Int], limit: Int) -> Int {
+    var count: Int = 0
+    for value in values {
+        if value > limit {
+            count = count + 1
+        }
+    }
+    return count
+}

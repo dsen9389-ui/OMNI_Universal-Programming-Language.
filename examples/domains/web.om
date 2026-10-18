@@ -1,0 +1,6 @@
+import "../../stdlib/v1/web.om" as web
+
+let response = web.ok("Hello from an OMNI response model")
+print("Web status =", response.status)
+print("Response body =", response.body)
+print("Successful response =", web.is_success(response))

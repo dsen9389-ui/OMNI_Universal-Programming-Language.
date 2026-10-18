@@ -1,0 +1,3 @@
+# Short expressions stay easy to read; OMNI also bounds expression-tree depth.
+let subtotal = 12 + 3 * 2
+print("subtotal =", subtotal)

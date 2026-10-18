@@ -1,0 +1,80 @@
+name: OMNI CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: omni-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: ${{ matrix.label }} / Node ${{ matrix.node }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: Linux x64
+            runner: ubuntu-24.04
+            node: 22
+          - label: Linux x64
+            runner: ubuntu-24.04
+            node: 24
+          - label: Linux arm64
+            runner: ubuntu-24.04-arm
+            node: 24
+          - label: macOS Intel x64
+            runner: macos-15-intel
+            node: 24
+          - label: macOS Apple silicon arm64
+            runner: macos-15
+            node: 24
+          - label: Windows x64
+            runner: windows-2025
+            node: 24
+          - label: Windows arm64
+            runner: windows-11-arm
+            node: 24
+    steps:
+      - name: Check out OMNI
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up supported Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          package-manager-cache: false
+
+      - name: Install checksum-verified Zig
+        run: node scripts/install-zig.mjs
+        env:
+          OMNI_ZIG_VERSION: 0.17.0
+
+      - name: Check JavaScript syntax
+        run: npm run check:syntax
+
+      - name: Check documented host matrix against CI
+        run: npm run check:support-matrix
+
+      - name: Run regression tests
+        run: npm test
+
+      - name: Run language conformance suite
+        run: npm run test:conformance
+
+      - name: Fuzz parser, checker, and portable engines with deterministic inputs
+        run: npm run fuzz
+
+      - name: Record comparable engine benchmark samples
+        run: node scripts/benchmark.mjs --samples 5 --warmups 1
+
+      - name: Check the maintained OMNI test example formatting
+        run: node bin/omni.mjs fmt examples/tooling-tests/tests/addition.test.om --check
+
+      - name: Run the maintained OMNI test example
+        run: node bin/omni.mjs test examples/tooling-tests/tests --engine javascript

@@ -1,0 +1,6 @@
+fn replaceWithText(values: Any) {
+    values[0] = "bad"
+}
+
+let numbers: List[Int] = [1]
+replaceWithText(numbers)

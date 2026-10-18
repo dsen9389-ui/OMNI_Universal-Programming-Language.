@@ -1,0 +1,22 @@
+{
+  "name": "omni-language-bootstrap",
+  "version": "0.0.1",
+  "private": true,
+  "description": "The OMNI interpreter, bytecode VM, JavaScript compiler, and language specification",
+  "type": "module",
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0"
+  },
+  "bin": {
+    "omni": "./bin/omni.mjs"
+  },
+  "scripts": {
+    "omni": "node ./bin/omni.mjs",
+    "test": "node --test",
+    "test:conformance": "node ./conformance/run.mjs",
+    "check:syntax": "node ./scripts/check-syntax.mjs",
+    "check:support-matrix": "node ./scripts/check-support-matrix.mjs",
+    "fuzz": "node ./scripts/fuzz.mjs",
+    "benchmark": "node ./scripts/benchmark.mjs"
+  }
+}

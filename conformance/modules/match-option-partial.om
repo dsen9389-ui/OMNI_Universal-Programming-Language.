@@ -1,0 +1,5 @@
+let value: Option[Int] = some(1)
+match value {
+    none => {}
+    some(1) => {}
+}

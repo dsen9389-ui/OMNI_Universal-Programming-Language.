@@ -1,0 +1,19 @@
+# Recursive enums can model familiar tree shaped data.
+enum Tree {
+    Leaf(Int),
+    Branch(Tree, Tree),
+}
+
+fn total(tree: Tree) -> Int {
+    match tree {
+        Tree.Leaf(value) => {
+            return value
+        }
+        Tree.Branch(left, right) => {
+            return total(left) + total(right)
+        }
+    }
+}
+
+let tree = Tree.Branch(Tree.Leaf(2), Tree.Branch(Tree.Leaf(3), Tree.Leaf(4)))
+print("tree total =", total(tree))

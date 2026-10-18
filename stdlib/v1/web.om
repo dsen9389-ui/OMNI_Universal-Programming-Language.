@@ -1,0 +1,13 @@
+# Pure helpers for representing responses. A server or network library is not included yet.
+record Response {
+    status: Int,
+    body: Text,
+}
+
+fn ok(body: Text) -> Response {
+    return Response(status: 200, body: body)
+}
+
+fn is_success(response: Response) -> Bool {
+    return response.status >= 200 and response.status < 300
+}

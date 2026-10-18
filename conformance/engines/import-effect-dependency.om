@@ -1,0 +1,2 @@
+print("dependency side effect")
+let value = 1

@@ -1,0 +1,6 @@
+fn appendText(values: Any) {
+    push(values[0], "bad")
+}
+
+let rows: List[List[Int]] = [[1]]
+appendText(rows)

@@ -1,0 +1,4 @@
+[run]
+development = "interpreter"
+release = "native"
+target = "host"

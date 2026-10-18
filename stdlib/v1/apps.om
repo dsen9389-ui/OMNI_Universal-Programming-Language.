@@ -1,0 +1,13 @@
+# Reusable application view-state decisions without a UI toolkit dependency.
+record ScreenState {
+    pending_items: Int,
+    busy: Bool,
+}
+
+fn show_loading(state: ScreenState) -> Bool {
+    return state.busy
+}
+
+fn show_empty_state(state: ScreenState) -> Bool {
+    return !state.busy and state.pending_items == 0
+}

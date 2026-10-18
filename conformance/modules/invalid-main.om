@@ -1,0 +1,2 @@
+print("entry side effect must not happen")
+import "./invalid-type.om" as invalid

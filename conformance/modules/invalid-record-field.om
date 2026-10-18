@@ -1,0 +1,6 @@
+record Point {
+    x: Int,
+    y: Int,
+}
+let point = Point(x: 0, y: 0)
+point.x = "bad"

@@ -1,0 +1,14 @@
+# Deterministic game rules; randomness and graphics stay in platform libraries.
+fn next_player(current: Int, player_count: Int) -> Int {
+    if player_count <= 0 {
+        return 0
+    }
+    if current + 1 >= player_count {
+        return 0
+    }
+    return current + 1
+}
+
+fn has_won(score: Int, winning_score: Int) -> Bool {
+    return score >= winning_score
+}

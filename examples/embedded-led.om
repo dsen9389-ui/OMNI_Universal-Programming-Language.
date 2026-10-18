@@ -1,0 +1,15 @@
+# This source targets a small embedded platform through serial and GPIO hooks.
+fn blink(pin: Int) {
+    var cycles: Int = 0
+    while cycles < 2 {
+        gpio_write(pin, true)
+        serial_write("Status LED on\n")
+        gpio_write(pin, false)
+        serial_write("Status LED off\n")
+        cycles = cycles + 1
+    }
+}
+
+print("OMNI embedded demo starting")
+blink(13)
+print("Two blink cycles complete")

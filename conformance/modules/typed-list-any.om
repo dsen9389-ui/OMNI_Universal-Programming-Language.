@@ -1,0 +1,6 @@
+fn appendText(values: Any) {
+    push(values, "bad")
+}
+
+let numbers: List[Int] = [1]
+appendText(numbers)

@@ -1,0 +1,13 @@
+fn target_index() -> Int {
+    print("target")
+    return 0
+}
+
+fn replacement() -> Int {
+    print("value")
+    return 7
+}
+
+let values = [1]
+values[target_index()] = replacement()
+print("stored:", values[0])

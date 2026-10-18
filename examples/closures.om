@@ -1,0 +1,14 @@
+var next: Any = none
+
+{
+    var value = 0
+    fn increment() -> Int {
+        value = value + 1
+        return value
+    }
+
+    next = increment
+}
+
+print(next())
+print(next())

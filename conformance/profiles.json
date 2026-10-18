@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "profiles": [
+    {
+      "id": "core-v1",
+      "version": 1,
+      "kind": "run",
+      "target": "host",
+      "engines": ["interpreter", "bytecode", "javascript"],
+      "backend": "selected-engine",
+      "runtime": "node",
+      "safety": "static-types-and-runtime-contracts",
+      "standardLibrary": "core-v1",
+      "capabilities": ["output"],
+      "cAbi": null
+    },
+    {
+      "id": "web-v1",
+      "version": 1,
+      "kind": "build",
+      "target": "web",
+      "engines": [],
+      "backend": "javascript",
+      "runtime": "browser",
+      "safety": "static-types-and-runtime-contracts",
+      "standardLibrary": "core-plus-web-output-v1",
+      "capabilities": ["output"],
+      "cAbi": null
+    },
+    {
+      "id": "embedded-v1",
+      "version": 1,
+      "kind": "build",
+      "target": "embedded",
+      "engines": [],
+      "backend": "freestanding-c",
+      "runtime": "freestanding",
+      "safety": "static-scalar-checks-and-checked-arithmetic",
+      "standardLibrary": "core-plus-embedded-io-v1",
+      "capabilities": ["output", "serial", "gpio"],
+      "cAbi": null
+    },
+    {
+      "id": "embedded-ffi-v1",
+      "version": 1,
+      "kind": "build",
+      "target": "embedded",
+      "engines": [],
+      "backend": "freestanding-c",
+      "runtime": "freestanding",
+      "safety": "checked-scalar-core-with-explicit-unsafe-c-abi",
+      "standardLibrary": "core-plus-embedded-io-and-c-abi-v1",
+      "capabilities": ["output", "serial", "gpio", "c-abi"],
+      "cAbi": "c-int32-float64-bool-v1"
+    }
+  ],
+  "unsupported": [
+    { "profile": "core-v1", "command": "build", "target": "web", "reason": "run profiles do not select build backends" },
+    { "profile": "web-v1", "command": "run", "target": "host", "reason": "web-v1 is a build profile; use omni build" },
+    { "profile": "web-v1", "command": "build", "target": "embedded", "reason": "profile and target do not match" },
+    { "profile": "embedded-v1", "command": "build", "target": "web", "reason": "profile and target do not match" },
+    { "profile": "core-v1", "command": "run", "target": "host", "engine": "missing-engine", "reason": "engine is not registered for the profile" },
+    { "profile": "embedded-v1", "command": "build", "target": "embedded", "effect": "c-abi", "reason": "native C calls require embedded-ffi-v1" }
+  ]
+}

@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.omni-tools/
+*.omni-cache/
+.DS_Store
+Thumbs.db

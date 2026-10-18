@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-10-18T13:34:02.200Z",
+  "workload": "engine-loop-v1",
+  "workloadSha256": "6dd1456279f131f879e4e64a1909d38b15d2563c054010c8fe7ab7d2c87c09d8",
+  "environment": {
+    "platform": "win32",
+    "architecture": "x64",
+    "node": "24.20.0",
+    "cpu": "Intel(R) Core(TM) Ultra 5 225H"
+  },
+  "samples": 20,
+  "warmups": 4,
+  "regressionThresholdPercent": 10,
+  "results": [
+    {
+      "engine": "interpreter",
+      "compileMedianMs": null,
+      "executionMedianMs": 1.29,
+      "executionMadMs": 0.35
+    },
+    {
+      "engine": "bytecode",
+      "compileMedianMs": 0.04,
+      "executionMedianMs": 4.75,
+      "executionMadMs": 0.34
+    },
+    {
+      "engine": "javascript",
+      "compileMedianMs": 0.06,
+      "executionMedianMs": 4.71,
+      "executionMadMs": 0.18
+    }
+  ]
+}

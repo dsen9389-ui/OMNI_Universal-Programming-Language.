@@ -1,0 +1,36 @@
+# This portable core program can run in the interpreter, bytecode VM, or JavaScript engine.
+fn double(value: Int) -> Int {
+    return value * 2
+}
+
+fn makeCounter(start: Int) {
+    var current = start
+    fn next() -> Int {
+        current = current + 1
+        return current
+    }
+    return next
+}
+
+let next = makeCounter(40)
+let doubled = map(range(1, 5), double)
+var total = 0
+for value in doubled {
+    if value > 4 {
+        total = total + value
+    }
+}
+
+print("counter =", next(), next())
+print("doubled values =", doubled)
+print("total above four =", total)
+print("function =", double)
+
+let snapshots = []
+for number in [3, 5] {
+    fn capture() -> Int {
+        return number
+    }
+    push(snapshots, capture)
+}
+print("loop closures =", snapshots[0](), snapshots[1]())

@@ -1,0 +1,6 @@
+# Development favors quick feedback; release uses the JavaScript compiler.
+[run]
+development = "interpreter"
+release = "javascript"
+target = "host"
+profile = "core-v1"

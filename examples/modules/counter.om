@@ -1,0 +1,6 @@
+var count = 0
+
+fn increment() -> Int {
+    count = count + 1
+    return count
+}

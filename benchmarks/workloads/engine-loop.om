@@ -1,0 +1,10 @@
+# A small repeatable workload for comparing OMNI host engines.
+fn sum(limit: Int) -> Int {
+    var total: Int = 0
+    for number in range(limit) {
+        total = total + number
+    }
+    return total
+}
+
+print("sum =", sum(2500))

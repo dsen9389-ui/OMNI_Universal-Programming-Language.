@@ -1,0 +1,3 @@
+extern fn sensor_value() -> Int
+print("this effect must not run")
+let value = sensor_value()

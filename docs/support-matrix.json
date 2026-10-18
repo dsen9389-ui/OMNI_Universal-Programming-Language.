@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "runtime": {
+    "name": "Node.js",
+    "supportedMajorVersions": [22, 24]
+  },
+  "toolchainHosts": [
+    { "operatingSystem": "Linux", "architecture": "x64", "runner": "ubuntu-24.04" },
+    { "operatingSystem": "Linux", "architecture": "arm64", "runner": "ubuntu-24.04-arm" },
+    { "operatingSystem": "macOS", "architecture": "x64", "runner": "macos-15-intel" },
+    { "operatingSystem": "macOS", "architecture": "arm64", "runner": "macos-15" },
+    { "operatingSystem": "Windows", "architecture": "x64", "runner": "windows-2025" },
+    { "operatingSystem": "Windows", "architecture": "arm64", "runner": "windows-11-arm" }
+  ],
+  "targets": [
+    { "target": "host", "status": "runs through Node.js on the declared toolchain hosts" },
+    { "target": "web", "status": "builds a browser JavaScript application; browser versions are not yet declared" },
+    { "target": "embedded", "status": "builds and runs the simulator on the declared CI hosts; physical boards are not yet declared" }
+  ]
+}

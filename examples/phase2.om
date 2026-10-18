@@ -1,0 +1,62 @@
+# A small task model using records, enums, options, results, and list helpers.
+enum State {
+    Ready(Text),
+    Failed(Text),
+    Idle,
+}
+
+record Task {
+    title: Text,
+    done: Bool,
+    state: State,
+}
+
+fn describe(state: State) -> Text {
+    match state {
+        State.Ready(message) => {
+            return message
+        }
+        State.Failed(reason) => {
+            return "failed: {reason}"
+        }
+        State.Idle => {
+            return "idle"
+        }
+    }
+}
+
+fn double(value: Int) -> Int {
+    return value * 2
+}
+
+fn isLarge(value: Int) -> Bool {
+    return value > 5
+}
+
+let task = Task(title: "Write the example", done: false, state: State.Ready("in progress"))
+task.done = true
+print(task.title, describe(task.state), "done =", task.done)
+
+let optional: Text? = some("present")
+match optional {
+    none => {
+        print("no value")
+    }
+    some(value) => {
+        print("option = {value}")
+    }
+}
+
+let outcome: Result[Text, Text] = err("offline")
+match outcome {
+    ok(value) => {
+        print("result = {value}")
+    }
+    err(message) => {
+        print("error = {message}")
+    }
+}
+
+let doubled = map([1, 2, 3, 4], double)
+let large = filter(doubled, isLarge)
+print("large values =", large)

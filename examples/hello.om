@@ -1,0 +1,2 @@
+let name: Text = "Ada"
+print("Hello, {name}!")

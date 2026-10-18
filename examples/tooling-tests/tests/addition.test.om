@@ -1,0 +1,5 @@
+fn add(left: Int, right: Int) -> Int {
+    return left + right
+}
+
+print("2 + 3 =", add(2, 3))

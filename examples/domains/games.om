@@ -1,0 +1,4 @@
+import "../../stdlib/v1/games.om" as games
+
+print("Next player =", games.next_player(2, 4))
+print("Score reached goal =", games.has_won(12, 10))

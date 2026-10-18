@@ -1,0 +1,17 @@
+record Pair {
+    left: Int,
+    right: Int,
+}
+
+enum Outcome {
+    Ready(Text),
+    Missing,
+}
+
+fn sum(pair: Pair) -> Int {
+    return pair.left + pair.right
+}
+
+fn status() -> Outcome {
+    return Outcome.Ready("module loaded")
+}

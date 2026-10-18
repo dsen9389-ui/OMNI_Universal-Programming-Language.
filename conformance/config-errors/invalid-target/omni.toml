@@ -1,0 +1,4 @@
+[run]
+development = "interpreter"
+release = "javascript"
+target = "embedded"

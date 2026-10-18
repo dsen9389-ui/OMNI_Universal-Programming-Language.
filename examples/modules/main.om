@@ -1,0 +1,20 @@
+import "./math.om" as math
+import "./counter.om" as counter
+import "./counter.om" as sameCounter
+
+let pair: math.Pair = math.Pair(left: 20, right: 22)
+print("sum =", math.sum(pair))
+
+match math.status() {
+    math.Outcome.Ready(message) => {
+        print(message)
+    }
+    math.Outcome.Missing => {
+        print("missing")
+    }
+}
+
+print("counter =", counter.count)
+counter.increment()
+print("counter =", counter.count)
+print("same module =", sameCounter.count)

@@ -1,0 +1,14 @@
+let values = [3, 5, 8]
+push(values, 13)
+values[0] = 2
+
+var total = 0
+for value in values {
+    total = total + value
+}
+
+if total == 28 {
+    print("sum = " + str(total) + "; count = " + str(len(values)))
+} else {
+    print("unexpected sum: {total}")
+}

@@ -1,0 +1,4 @@
+[run]
+development = "bytecode"
+release = "javascript"
+target = "host"

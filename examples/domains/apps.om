@@ -1,0 +1,6 @@
+import "../../stdlib/v1/apps.om" as apps
+
+let loading = apps.ScreenState(pending_items: 3, busy: true)
+let empty = apps.ScreenState(pending_items: 0, busy: false)
+print("Show loading =", apps.show_loading(loading))
+print("Show empty state =", apps.show_empty_state(empty))

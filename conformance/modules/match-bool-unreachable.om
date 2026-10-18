@@ -1,0 +1,6 @@
+let value = true
+match value {
+    true => {}
+    false => {}
+    _ => {}
+}

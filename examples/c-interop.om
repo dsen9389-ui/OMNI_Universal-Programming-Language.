@@ -1,0 +1,18 @@
+# Native calls are an explicit choice in the embedded-ffi-v1 profile.
+extern fn calibrated_pin(base: Int, offset: Int) -> Int
+extern fn read_voltage(pin: Int) -> Float
+extern fn sensor_ready() -> Bool
+extern fn save_reading(pin: Int, voltage: Float, ready: Bool)
+
+print("OMNI calling a C sensor")
+let pin = calibrated_pin(10, 3)
+let voltage = read_voltage(pin)
+let ready = sensor_ready()
+save_reading(pin, voltage, ready)
+
+if ready and voltage >= 3.0 {
+    gpio_write(pin, true)
+    serial_write("C ABI call succeeded\n")
+} else {
+    serial_write("C ABI sensor is not ready\n")
+}

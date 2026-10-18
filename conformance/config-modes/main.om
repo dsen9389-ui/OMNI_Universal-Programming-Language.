@@ -1,0 +1,5 @@
+fn double(value: Int) -> Int {
+    return value * 2
+}
+
+print(double(21))

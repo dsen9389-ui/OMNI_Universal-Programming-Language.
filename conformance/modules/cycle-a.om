@@ -1,0 +1,2 @@
+import "./cycle-b.om" as cycle
+print("cycle A")

@@ -1,0 +1,8 @@
+# The same readable core syntax runs in the browser.
+fn greeting(name: Text) -> Text {
+    return "Hello, {name}!"
+}
+
+let message = greeting("web")
+print(message)
+print("This output is rendered on the page.")

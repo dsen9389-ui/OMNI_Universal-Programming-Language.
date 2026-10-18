@@ -1,0 +1,4 @@
+import "../../stdlib/v1/scripting.om" as scripting
+
+let options = scripting.RunOptions(dryRun: false, attempts: 2)
+print("Scripting can run =", scripting.can_run(options))
