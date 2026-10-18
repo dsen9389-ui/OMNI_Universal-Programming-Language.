@@ -8,6 +8,7 @@ OMNI is pre-1.0. This record tracks the security review and remediation evidence
 - Independent review: three read-only reviews were used in the discovery and remediation workflow. Follow-up reviews found and closed terminal-output paths in CLI commands and developer scripts. The final follow-up identified one remaining terminal-spoofing path in benchmark CPU metadata; it now uses the same terminal sanitizer.
 - Findings and fixes:
   - Build generation and embedded executable installation now validate output paths, reject symlinked or non-regular destinations, and keep temporary compiler output under the selected output root.
+  - macOS's `/var` and `/tmp` aliases are canonicalized only when they resolve to the expected `/private` system directories; other symlinked path components remain rejected.
   - Snapshot updates use the same safe output-writing checks and reject symlinked snapshot files.
   - Imported module targets must have the canonical `.om` extension, including when an import resolves through a symlink.
   - The language server bounds incomplete protocol headers to 8 KiB before accepting a body, whose existing limit is 16 MiB.

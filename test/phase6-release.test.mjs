@@ -93,15 +93,17 @@ test("benchmark usage errors escape terminal control characters", () => {
 
 test("web builds reject symlinked output roots, artifact files, and runtime directories", async (t) => {
     const root = await mkdtemp(resolve(projectRoot, ".phase7-build-boundary-"));
-    const outputDirectory = resolve(root, "output");
+    const artifactOutput = resolve(root, "artifact-output");
+    const runtimeOutput = resolve(root, "runtime-output");
     const outside = resolve(root, "outside");
     const sentinel = resolve(outside, "sentinel.txt");
     try {
-        await mkdir(outputDirectory);
+        await mkdir(artifactOutput);
+        await mkdir(runtimeOutput);
         await mkdir(outside);
         await writeFile(sentinel, "keep this file\n", "utf8");
         try {
-            await symlink(sentinel, resolve(outputDirectory, "index.html"), "file");
+            await symlink(sentinel, resolve(artifactOutput, "index.html"), "file");
         } catch (error) {
             if (["EPERM", "EACCES", "ENOTSUP", "UNKNOWN"].includes(error.code)) {
                 t.skip("this Windows account cannot create symbolic links");
@@ -111,13 +113,12 @@ test("web builds reject symlinked output roots, artifact files, and runtime dire
         }
 
         const examplePath = resolve(projectRoot, "examples", "web-app.om");
-        const artifactAttack = build(examplePath, "web", outputDirectory);
+        const artifactAttack = build(examplePath, "web", artifactOutput);
         assert.notEqual(artifactAttack.status, 0);
         assert.equal(await readFile(sentinel, "utf8"), "keep this file\n");
 
-        await rm(resolve(outputDirectory, "index.html"), { force: true });
         try {
-            await symlink(outside, resolve(outputDirectory, "omni-runtime"), "junction");
+            await symlink(outside, resolve(runtimeOutput, "omni-runtime"), "junction");
         } catch (error) {
             if (["EPERM", "EACCES", "ENOTSUP", "UNKNOWN"].includes(error.code)) {
                 t.skip("this Windows account cannot create directory symbolic links");
@@ -125,7 +126,7 @@ test("web builds reject symlinked output roots, artifact files, and runtime dire
             }
             throw error;
         }
-        const directoryAttack = build(examplePath, "web", outputDirectory);
+        const directoryAttack = build(examplePath, "web", runtimeOutput);
         assert.notEqual(directoryAttack.status, 0);
         assert.equal(await readFile(sentinel, "utf8"), "keep this file\n");
 

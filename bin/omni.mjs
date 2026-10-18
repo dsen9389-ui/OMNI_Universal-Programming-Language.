@@ -236,7 +236,7 @@ async function main(args) {
                     const primary = JSON.parse(await readFile(join(outDirectory, "omni-build.json"), "utf8"));
                     const verification = JSON.parse(await readFile(join(verificationDirectory, "omni-build.json"), "utf8"));
                     if (JSON.stringify(primary) !== JSON.stringify(verification)) {
-                        throw new Error("artifact manifests differ between two clean builds");
+                        throw new Error("artifact manifests differ between two clean builds: " + describeManifestDifferences(primary, verification));
                     }
                     stdout.write("Repeatable build verified: artifact hashes matched across two clean builds.\n");
                 } finally {
@@ -541,6 +541,19 @@ async function runRepl() {
         repl.close();
     }
     return 0;
+}
+
+function describeManifestDifferences(first, second) {
+    const metadataKeys = [...new Set([...Object.keys(first), ...Object.keys(second)])]
+        .filter((key) => key !== "artifacts" && JSON.stringify(first[key]) !== JSON.stringify(second[key]));
+    const firstArtifacts = new Map((first.artifacts ?? []).map((artifact) => [artifact.path, artifact.sha256]));
+    const secondArtifacts = new Map((second.artifacts ?? []).map((artifact) => [artifact.path, artifact.sha256]));
+    const artifactPaths = [...new Set([...firstArtifacts.keys(), ...secondArtifacts.keys()])]
+        .filter((path) => firstArtifacts.get(path) !== secondArtifacts.get(path));
+    const differences = [];
+    if (metadataKeys.length) differences.push("metadata fields: " + metadataKeys.join(", "));
+    if (artifactPaths.length) differences.push("artifact hashes: " + artifactPaths.join(", "));
+    return differences.join("; ") || "unknown manifest difference";
 }
 
 function usageError(message) {

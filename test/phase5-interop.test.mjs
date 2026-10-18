@@ -50,7 +50,7 @@ test("embedded-ffi-v1 links a C source and runs Int, Float, Bool, and Unit calls
         assert.match(metadata.nativeSources[0].sha256, /^[0-9a-f]{64}$/u);
         assert.equal(typeof metadata.compilerVersion, "string");
 
-        const output = execFileSync(resolve(outputDirectory, "omni-firmware-sim.exe"), [], { encoding: "utf8" });
+        const output = execFileSync(resolve(outputDirectory, metadata.simulator), [], { encoding: "utf8" });
         assert.equal(output.replace(/\r\n/gu, "\n"), [
             "OMNI calling a C sensor",
             "[C] pin 13 measured 3.3 volts, ready=true",

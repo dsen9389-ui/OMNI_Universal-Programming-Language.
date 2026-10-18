@@ -1,11 +1,11 @@
 import { randomUUID } from "node:crypto";
-import { lstat, mkdir, open, readFile, rename, unlink } from "node:fs/promises";
+import { lstat, mkdir, open, readFile, realpath, rename, unlink } from "node:fs/promises";
 import { dirname, isAbsolute, join, parse, relative, resolve, sep } from "node:path";
 
 const renameFallbackCodes = new Set(["EPERM", "EACCES", "ENOTSUP"]);
 
 export async function ensureSafeDirectory(directory) {
-    const absolute = resolve(directory);
+    const absolute = await resolveSystemAlias(resolve(directory));
     const { root } = parse(absolute);
     const parts = absolute.slice(root.length).split(sep).filter(Boolean);
     let current = root;
@@ -72,9 +72,7 @@ export async function safeReadFile(root, relativePath, options) {
     const target = resolveInside(safeRoot, relativePath);
     await ensureSafeDirectory(dirname(target));
     const info = await lstat(target);
-    if (info.isSymbolicLink() || !info.isFile()) {
-        throw new Error("output artifact is not a regular file: " + target);
-    }
+    assertRegularFile(info, target);
     return readFile(target, options);
 }
 
@@ -121,12 +119,31 @@ function assertWithin(root, target) {
 async function assertRegularOrMissing(path) {
     try {
         const info = await lstat(path);
-        if (info.isSymbolicLink() || !info.isFile()) {
-            throw new Error("output artifact is not a regular file: " + path);
-        }
+        assertRegularFile(info, path);
     } catch (error) {
         if (error.code !== "ENOENT") throw error;
     }
+}
+
+function assertRegularFile(info, path) {
+    if (info.isSymbolicLink()) throw new Error("output artifact is a symbolic link: " + path);
+    if (!info.isFile()) throw new Error("output artifact is not a regular file: " + path);
+}
+
+async function resolveSystemAlias(absolute) {
+    if (process.platform !== "darwin") return absolute;
+
+    // macOS exposes temporary and variable data through these system symlink aliases.
+    // Resolve only the exact OS-managed aliases, then keep rejecting other symlinks.
+    for (const [alias, canonical] of [["/var", "/private/var"], ["/tmp", "/private/tmp"]]) {
+        if (!absolute.startsWith(alias + sep)) continue;
+        try {
+            if (await realpath(alias) === canonical) return canonical + absolute.slice(alias.length);
+        } catch {
+            // Keep the original path; the normal safe-directory walk reports any problem.
+        }
+    }
+    return absolute;
 }
 
 async function writeAfterRenameDenied(destination, data) {
