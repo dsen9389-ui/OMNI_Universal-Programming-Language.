@@ -236,7 +236,7 @@ async function main(args) {
                     const primary = JSON.parse(await readFile(join(outDirectory, "omni-build.json"), "utf8"));
                     const verification = JSON.parse(await readFile(join(verificationDirectory, "omni-build.json"), "utf8"));
                     if (JSON.stringify(primary) !== JSON.stringify(verification)) {
-                        throw new Error("artifact manifests differ between two clean builds: " + describeManifestDifferences(primary, verification));
+                        throw new Error("artifact manifests differ between two clean builds: " + await describeManifestDifferences(primary, verification, outDirectory, verificationDirectory));
                     }
                     stdout.write("Repeatable build verified: artifact hashes matched across two clean builds.\n");
                 } finally {
@@ -543,7 +543,7 @@ async function runRepl() {
     return 0;
 }
 
-function describeManifestDifferences(first, second) {
+async function describeManifestDifferences(first, second, firstDirectory, secondDirectory) {
     const metadataKeys = [...new Set([...Object.keys(first), ...Object.keys(second)])]
         .filter((key) => key !== "artifacts" && JSON.stringify(first[key]) !== JSON.stringify(second[key]));
     const firstArtifacts = new Map((first.artifacts ?? []).map((artifact) => [artifact.path, artifact.sha256]));
@@ -552,7 +552,29 @@ function describeManifestDifferences(first, second) {
         .filter((path) => firstArtifacts.get(path) !== secondArtifacts.get(path));
     const differences = [];
     if (metadataKeys.length) differences.push("metadata fields: " + metadataKeys.join(", "));
-    if (artifactPaths.length) differences.push("artifact hashes: " + artifactPaths.join(", "));
+    for (const path of artifactPaths) {
+        let detail = path + " (SHA-256 " + (firstArtifacts.get(path) ?? "missing") + " vs " + (secondArtifacts.get(path) ?? "missing") + ")";
+        if (firstArtifacts.has(path) && secondArtifacts.has(path)) {
+            try {
+                const [firstBytes, secondBytes] = await Promise.all([
+                    readFile(join(firstDirectory, path)),
+                    readFile(join(secondDirectory, path)),
+                ]);
+                const sharedLength = Math.min(firstBytes.length, secondBytes.length);
+                let offset = 0;
+                while (offset < sharedLength && firstBytes[offset] === secondBytes[offset]) offset += 1;
+                if (offset < sharedLength) {
+                    detail += "; first byte difference at offset 0x" + offset.toString(16) + " (" + firstBytes[offset].toString(16).padStart(2, "0") + " vs " + secondBytes[offset].toString(16).padStart(2, "0") + ")";
+                } else if (firstBytes.length !== secondBytes.length) {
+                    detail += "; lengths differ (" + firstBytes.length + " vs " + secondBytes.length + ")";
+                }
+            } catch {
+                detail += "; byte-level comparison unavailable";
+            }
+        }
+        differences.push(detail);
+    }
+    if (artifactPaths.length) differences.unshift("artifact hashes: " + artifactPaths.join(", "));
     return differences.join("; ") || "unknown manifest difference";
 }
 
