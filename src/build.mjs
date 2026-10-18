@@ -86,7 +86,7 @@ export async function buildEmbedded(program, context, outDirectory, options = {}
     const temporaryDirectory = await mkdtemp(join(outDirectory, ".omni-embedded-"));
     const temporaryBinaryPath = join(temporaryDirectory, process.platform === "win32" ? "simulator.exe" : "simulator");
     const compiled = spawnSync(zig, [
-        "cc", "-std=c11", "-O2", "-I", outDirectory,
+        "cc", "-std=c11", "-O2", "-ffile-prefix-map=" + outDirectory + "=.", "-I", outDirectory,
         firmwarePath, simulatorPath, ...cSources, "-o", temporaryBinaryPath,
     ], { encoding: "utf8", windowsHide: true });
     if (compiled.error || compiled.status !== 0) {

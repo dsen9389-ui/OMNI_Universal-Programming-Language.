@@ -42,7 +42,7 @@ The bootstrap toolchain uses Node.js built-in modules only. External build tools
 
 ## Release and platform claims
 
-- A build manifest records its target, profile, compiler where relevant, and SHA-256 hashes of generated artifacts. `--verify-reproducible` compares two clean builds on the current host. Windows simulator builds clear volatile PE timestamps and remove the debug-directory reference because no matching PDB is distributed.
+- A build manifest records its target, profile, compiler where relevant, and SHA-256 hashes of generated artifacts. `--verify-reproducible` compares two clean builds on the current host. Embedded C builds remap the generated source root to a stable relative path; Windows simulator builds also clear volatile PE timestamps and remove the debug-directory reference because no matching PDB is distributed.
 - A release candidate must pass the regression suite, language conformance suite, syntax checks, maintained examples, and repeatable-build checks on every platform claimed as verified.
 - Report a platform as configured until its CI job has actually passed. Report physical embedded board support only after builds and runtime behavior are checked on that board.
 - Record dependency licenses and external compiler versions before creating a distributable release. Do not call the current simulator executable a device firmware release.
