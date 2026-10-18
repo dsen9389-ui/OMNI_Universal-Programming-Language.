@@ -73,11 +73,10 @@ export async function buildEmbedded(program, context, outDirectory, options = {}
     ]);
 
     const usesAppleClang = process.platform === "darwin";
-    const compiler = usesAppleClang
-        ? await findAppleClangExecutable(context)
-        : await findZigExecutable();
+    const compiler = usesAppleClang ? "xcrun" : await findZigExecutable();
+    const compilerArguments = usesAppleClang ? ["--sdk", "macosx", "clang"] : ["cc"];
     const compilerName = usesAppleClang ? "Apple Clang" : "Zig's C compiler (zig cc)";
-    const version = spawnSync(compiler, usesAppleClang ? ["--version"] : ["version"], { encoding: "utf8", windowsHide: true });
+    const version = spawnSync(compiler, usesAppleClang ? [...compilerArguments, "--version"] : ["version"], { encoding: "utf8", windowsHide: true });
     if (version.error || version.status !== 0) {
         fail(
             "E3005",
@@ -92,7 +91,7 @@ export async function buildEmbedded(program, context, outDirectory, options = {}
     const temporaryDirectory = await mkdtemp(join(outDirectory, ".omni-embedded-"));
     const temporaryBinaryPath = join(temporaryDirectory, process.platform === "win32" ? "simulator.exe" : "simulator");
     const compiled = spawnSync(compiler, [
-        ...(usesAppleClang ? [] : ["cc"]),
+        ...compilerArguments,
         "-std=c11", "-O2", "-ffile-prefix-map=" + outDirectory + "=.", "-I", outDirectory,
         firmwarePath, simulatorPath, ...cSources, "-o", temporaryBinaryPath,
     ], { encoding: "utf8", windowsHide: true });
@@ -239,22 +238,6 @@ async function findZigExecutable() {
         }
     }
     return "zig";
-}
-
-async function findAppleClangExecutable(context) {
-    const result = spawnSync("xcrun", ["--find", "clang"], { encoding: "utf8", windowsHide: true });
-    const clangPath = result.stdout?.trim();
-    if (result.error || result.status !== 0 || !clangPath) {
-        const details = [result.stderr, result.stdout].filter(Boolean).join("\n").trim();
-        fail(
-            "E3005",
-            "the embedded target on macOS needs Apple's Clang from Xcode Command Line Tools (xcrun clang); install the tools with xcode-select --install and retry" + (details ? ":\n" + details : ""),
-            { line: 1, column: 1, length: 1 },
-            context.sourceName,
-            context.sourceText,
-        );
-    }
-    return clangPath;
 }
 
 function webPage(sourceName) {
