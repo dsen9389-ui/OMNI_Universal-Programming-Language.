@@ -6,6 +6,7 @@ This page records tools used to build OMNI and the license checks completed for 
 | --- | --- | --- | --- | --- |
 | Node.js | Runs the dependency-free JavaScript bootstrap, CLI, and tests. | 24.20.0 on Windows | The repository uses built-in APIs only and does not redistribute Node.js. | Installed separately; not bundled by this repository. |
 | Zig | `zig cc` compiles the embedded simulator executable. | 0.17.0 on Windows | Upstream `LICENSE` reviewed; MIT (Expat). Recheck the exact release license before pinning or redistributing a Zig toolchain. | External build tool; neither the Zig compiler nor its source is vendored. |
+| Apple Clang (Xcode Command Line Tools) | Compiles the host simulator adapter on macOS, preserving a content-derived Mach-O UUID for repeatable builds. | macOS 15 CI image; exact Clang version is recorded in the build manifest. | Apple Clang is obtained from the system Xcode Command Line Tools; OMNI does not copy, bundle, or redistribute it. Follow Apple's Xcode and Command Line Tools license terms. | System developer tool; no compiler binary or implementation is vendored. |
 | `actions/checkout` | Checks out source in the Phase 6 CI workflow. | v7.0.1, pinned to `3d3c42e5aac5ba805825da76410c181273ba90b1` | Upstream `LICENSE` reviewed; MIT. | GitHub-hosted CI action; implementation is not copied into OMNI. |
 | `actions/setup-node` | Selects Node.js 22 or 24 in the Phase 6 CI workflow. | v7.1.0, pinned to `949feb2413d6458794dcd2491c4babbbce0c15c1` | Upstream `LICENSE` reviewed; MIT. | GitHub-hosted CI action; implementation is not copied into OMNI. |
 
@@ -15,7 +16,7 @@ Zig's upstream license: <https://github.com/ziglang/zig/blob/master/LICENSE>.
 
 OMNI supports Node.js 22 and 24, both maintained LTS release lines when this policy was updated on 2026-10-18. The CLI and package metadata reject other major versions rather than claiming support for end-of-life or current-only lines. Recheck the [upstream release schedule](https://nodejs.org/en/about/previous-releases) during each Phase 6 compatibility review and change the supported range only with a CI-tested update.
 
-The embedded firmware C output depends on the small OMNI platform-hook header and the platform functions described in the core specification. The simulator adapter is OMNI source. This record does not claim that a physical board SDK or a board-specific runtime has been reviewed.
+The embedded firmware C output depends on the small OMNI platform-hook header and the platform functions described in the core specification. The simulator adapter is OMNI source. Zig builds the host simulator on Linux and Windows; Apple Clang from Xcode Command Line Tools builds it on macOS. This record does not claim that a physical board SDK or a board-specific runtime has been reviewed.
 
 Before introducing a runtime or build dependency, record its purpose, version or range, upstream license, and whether any code or binaries are redistributed. Review transitive licenses and compatibility before adding a package manager or distributing a bundled toolchain.
 

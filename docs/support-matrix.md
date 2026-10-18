@@ -11,6 +11,6 @@ The machine-readable host matrix is in [support-matrix.json](support-matrix.json
 | Windows | x64 | `windows-2025` | CI configured |
 | Windows | arm64 | `windows-11-arm` | CI configured |
 
-The host matrix describes where OMNI's CLI and local checks run. It does not claim that every target artifact runs on every host. The web backend currently emits a browser JavaScript application; specific browser-version support is not declared. The embedded backend emits freestanding C and an executable simulator. Physical boards and board support packages remain unverified.
+The host matrix describes where OMNI's CLI and local checks run. It does not claim that every target artifact runs on every host. The web backend currently emits a browser JavaScript application; specific browser-version support is not declared. The embedded backend emits freestanding C and an executable simulator; Zig compiles the simulator on Linux and Windows, and Apple Clang from Xcode Command Line Tools compiles it on macOS. Physical boards and board support packages remain unverified.
 
 The workflow is configured in [`.github/workflows/ci.yml`](../.github/workflows/ci.yml). This workspace has no Git repository or remote, so the workflow has not yet run on hosted CI; its first green run on each row is required before describing that row as externally verified.

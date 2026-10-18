@@ -149,7 +149,7 @@ OMNI has one canonical syntax and three built-in capability sets. Effects are in
 | --- | --- | --- | --- |
 | `host` | `output` | `print` writes to the process output stream. | Interpreter supports the full core; bytecode and JavaScript support their portable Phase 3 subset. `omni run` uses this target. |
 | `web` | `output` | `print` appends to the page's accessible output panel. | `omni build --target web` emits a static browser app using the JavaScript compiler and copied portable runtime. This target supports the JavaScript engine's Phase 3 subset and one source module; imports and unsupported engine constructs fail with E3002. |
-| `embedded` | `output`, `serial`, `gpio` | `print` writes to serial with a line ending; `serial_write` writes exact text without adding one. | `omni build --target embedded` emits freestanding C plus a host simulator adapter and executable. Zig's C compiler builds that simulator. The generated firmware C depends only on standard freestanding headers and the small platform hooks in `omni_platform.h`. |
+| `embedded` | `output`, `serial`, `gpio` | `print` writes to serial with a line ending; `serial_write` writes exact text without adding one. | `omni build --target embedded` emits freestanding C plus a host simulator adapter and executable. Zig's C compiler builds the simulator on Linux and Windows; Apple Clang from Xcode Command Line Tools builds it on macOS. The generated firmware C depends only on standard freestanding headers and the small platform hooks in `omni_platform.h`. |
 
 `serial_write(text)` and `gpio_write(pin, high)` are the target-specific APIs for the embedded platform boundary. They are recognized and type checked on every target, then rejected with E3004 when used outside `embedded`. `print` is the portable output API; each target connects its output effect to its normal output channel.
 
@@ -173,7 +173,7 @@ Build target selection is separate from host execution. It can be passed on the 
     profile = "web-v1"
     target = "web"
 
-`omni build app.om --target web` creates `build/web` next to the source file by default; `--out-dir` changes that location. `omni serve build/web` starts a localhost-only preview server. `omni build firmware.om --target embedded` creates `build/embedded`, including `firmware.c`, the platform header, a simulator adapter, and a native simulator executable. The embedded build needs Zig with the `zig cc` command available. Run the produced executable to observe the firmware demo in the simulator.
+`omni build app.om --target web` creates `build/web` next to the source file by default; `--out-dir` changes that location. `omni serve build/web` starts a localhost-only preview server. `omni build firmware.om --target embedded` creates `build/embedded`, including `firmware.c`, the platform header, a simulator adapter, and a native simulator executable. The embedded build needs Zig with `zig cc` on Linux and Windows, or Apple's Clang from Xcode Command Line Tools on macOS. Run the produced executable to observe the firmware demo in the simulator.
 
 ### Phase 5 profiles and C ABI v1
 

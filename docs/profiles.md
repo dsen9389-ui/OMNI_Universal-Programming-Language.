@@ -8,8 +8,8 @@ Run `node .\\bin\\omni.mjs profiles` to list the profiles available in this rele
 | --- | --- | --- | --- | --- | --- |
 | `core-v1` | Run on `host` | `interpreter`, `bytecode`, or `javascript` | Node.js | Static type checks and runtime contracts | Core library; `output` |
 | `web-v1` | Build for `web` | JavaScript compiler | Browser | Static type checks and runtime contracts | Core and page output; `output` |
-| `embedded-v1` | Build for `embedded` | Freestanding C through Zig's C compiler | Freestanding | Scalar type checks and checked arithmetic | Core and embedded I/O; `output`, `serial`, `gpio` |
-| `embedded-ffi-v1` | Build for `embedded` | Freestanding C through Zig's C compiler | Freestanding | Checked scalar core with an explicit unsafe C boundary | Core, embedded I/O, and C ABI v1; `output`, `serial`, `gpio`, `c-abi` |
+| `embedded-v1` | Build for `embedded` | Freestanding C; host simulator uses Zig on Linux/Windows and Apple Clang on macOS | Freestanding | Scalar type checks and checked arithmetic | Core and embedded I/O; `output`, `serial`, `gpio` |
+| `embedded-ffi-v1` | Build for `embedded` | Freestanding C; host simulator uses Zig on Linux/Windows and Apple Clang on macOS | Freestanding | Checked scalar core with an explicit unsafe C boundary | Core, embedded I/O, and C ABI v1; `output`, `serial`, `gpio`, `c-abi` |
 
 The current project configuration selects a profile separately for running and building:
 

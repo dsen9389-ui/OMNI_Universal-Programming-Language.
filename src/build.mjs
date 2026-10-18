@@ -72,12 +72,18 @@ export async function buildEmbedded(program, context, outDirectory, options = {}
         safeWriteFile(outDirectory, "omni_platform_sim.c", generated.simulator),
     ]);
 
-    const zig = await findZigExecutable();
-    const version = spawnSync(zig, ["version"], { encoding: "utf8", windowsHide: true });
+    const usesAppleClang = process.platform === "darwin";
+    const compiler = usesAppleClang
+        ? await findAppleClangExecutable(context)
+        : await findZigExecutable();
+    const compilerName = usesAppleClang ? "Apple Clang" : "Zig's C compiler (zig cc)";
+    const version = spawnSync(compiler, usesAppleClang ? ["--version"] : ["version"], { encoding: "utf8", windowsHide: true });
     if (version.error || version.status !== 0) {
         fail(
             "E3005",
-            "the embedded target needs Zig's C compiler (zig cc); install Zig from https://ziglang.org/download/ and retry",
+            usesAppleClang
+                ? "the embedded target on macOS needs Apple's Clang from Xcode Command Line Tools (xcrun clang); install the tools with xcode-select --install and retry"
+                : "the embedded target needs Zig's C compiler (zig cc); install Zig from https://ziglang.org/download/ and retry",
             { line: 1, column: 1, length: 1 },
             context.sourceName,
             context.sourceText,
@@ -85,8 +91,9 @@ export async function buildEmbedded(program, context, outDirectory, options = {}
     }
     const temporaryDirectory = await mkdtemp(join(outDirectory, ".omni-embedded-"));
     const temporaryBinaryPath = join(temporaryDirectory, process.platform === "win32" ? "simulator.exe" : "simulator");
-    const compiled = spawnSync(zig, [
-        "cc", "-std=c11", "-O2", "-ffile-prefix-map=" + outDirectory + "=.", "-I", outDirectory,
+    const compiled = spawnSync(compiler, [
+        ...(usesAppleClang ? [] : ["cc"]),
+        "-std=c11", "-O2", "-ffile-prefix-map=" + outDirectory + "=.", "-I", outDirectory,
         firmwarePath, simulatorPath, ...cSources, "-o", temporaryBinaryPath,
     ], { encoding: "utf8", windowsHide: true });
     if (compiled.error || compiled.status !== 0) {
@@ -94,7 +101,7 @@ export async function buildEmbedded(program, context, outDirectory, options = {}
         const details = [compiled.stderr, compiled.stdout].filter(Boolean).join("\n").trim();
         fail(
             "E3005",
-            "Zig could not build the embedded simulator" + (details ? ":\n" + details : ""),
+            compilerName + " could not build the embedded simulator" + (details ? ":\n" + details : ""),
             { line: 1, column: 1, length: 1 },
             context.sourceName,
             context.sourceText,
@@ -122,8 +129,8 @@ export async function buildEmbedded(program, context, outDirectory, options = {}
         profile: profileId,
         backend: "freestanding-c",
         cAbi: profile?.cAbi ?? null,
-        compiler: "zig cc",
-        compilerVersion: version.stdout.trim(),
+        compiler: usesAppleClang ? "Apple Clang (Xcode Command Line Tools)" : "zig cc",
+        compilerVersion: [version.stdout, version.stderr].filter(Boolean).join("\n").trim().split(/\r?\n/u)[0],
         runtime: "included simulator adapter",
         source: basename(context.sourceName),
         nativeSources,
@@ -232,6 +239,22 @@ async function findZigExecutable() {
         }
     }
     return "zig";
+}
+
+async function findAppleClangExecutable(context) {
+    const result = spawnSync("xcrun", ["--find", "clang"], { encoding: "utf8", windowsHide: true });
+    const clangPath = result.stdout?.trim();
+    if (result.error || result.status !== 0 || !clangPath) {
+        const details = [result.stderr, result.stdout].filter(Boolean).join("\n").trim();
+        fail(
+            "E3005",
+            "the embedded target on macOS needs Apple's Clang from Xcode Command Line Tools (xcrun clang); install the tools with xcode-select --install and retry" + (details ? ":\n" + details : ""),
+            { line: 1, column: 1, length: 1 },
+            context.sourceName,
+            context.sourceText,
+        );
+    }
+    return clangPath;
 }
 
 function webPage(sourceName) {
