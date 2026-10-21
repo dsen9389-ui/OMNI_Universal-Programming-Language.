@@ -23,6 +23,7 @@ The freeze would exclude features listed in `core-v0.md` under **Explicitly not 
 - Native C ABI code executes with host permissions and must be reviewed and trusted. OMNI does not claim that it is sandboxed.
 - Package installation and the production domain frameworks remain deferred.
 - Pre-1.0 OMNI has no general source or binary compatibility guarantee. The proposed freeze makes no migration guarantee for programs that depend on unspecified behavior; supported core behavior must match the maintained conformance fixtures.
+- GitHub currently has no published tags or releases, and the npm package is private. Proposed migration note: “OMNI has no released 0.x compatibility baseline. Check pre-release programs against the stable core specification and update any code that relied on unspecified behavior; no source or binary migration guarantee is provided.”
 
 ## Maintainer review required
 
@@ -30,6 +31,6 @@ Before publishing a core 1.0.0 release candidate, review these points:
 
 1. Are the core syntax and semantics plus the four current versioned profile contracts a suitable stable foundation for Phase 8 frameworks? Is the current rule for incompatible profile tuples sufficient, with a broader cross-version compatibility model deferred?
 2. Are the host, web, embedded, native-code, and package limits above accurate and clear enough to prevent unsupported production claims?
-3. Does the pre-1.0 compatibility statement give current users enough migration guidance, or should a concrete before/after migration note be added before the candidate?
+3. Do you distribute pre-release builds outside this repository to users who need a before/after migration guide? There are no published tags or releases, so the note above assumes there is no supported 0.x migration baseline.
 
 After review, resolve any compatibility-affecting feedback, publish a core-specification release candidate, gather feedback, and only then mark the core specification stable. This review packet is not itself that release candidate.
