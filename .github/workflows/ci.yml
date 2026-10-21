@@ -48,7 +48,10 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         working-directory: ${{ runner.temp }}
-        run: New-Item -ItemType Directory -Path $env:GITHUB_WORKSPACE -Force | Out-Null
+        run: |
+          $workspace = $env:GITHUB_WORKSPACE
+          New-Item -ItemType Directory -Path $workspace -Force | Out-Null
+          [System.IO.Directory]::CreateDirectory("\\?\$workspace") | Out-Null
 
       - name: Check out OMNI
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
