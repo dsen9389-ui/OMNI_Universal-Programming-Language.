@@ -15,6 +15,17 @@ The freeze would exclude features listed in `core-v0.md` under **Explicitly not 
 - The security review and remediation evidence is recorded in [`security.md`](../security.md). The scan reviewed 128 of 128 repository files; six validated findings were fixed and follow-up reviews closed the reported terminal-output paths.
 - The deterministic fuzz seed and coverage are recorded in [`fuzzing.md`](../fuzzing.md). Windows x64 has a 20-sample benchmark baseline and a successful 100-sample same-machine comparison.
 
+## Freeze gate status
+
+| `stability.md` criterion | Evidence and status |
+| --- | --- |
+| Core specification, grammar, diagnostics, profiles, and conformance agree | Evidence is in `core-v0.md`, `profiles.md`, `profiles.json`, and the 53-case conformance suite. The exact freeze scope is ready for maintainer review. |
+| Regression, conformance, fuzz, formatting, tooling, and release-build gates pass | [CI run 39625986073](https://github.com/dsen9389-ui/OMNI_Universal-Programming-Language./actions/runs/39625986073) passed all seven host/runtime rows. |
+| Every advertised platform has hosted evidence; embedded scope is stated | All six declared host/architecture combinations are verified. Embedded support is simulator-only; no physical boards are declared. |
+| Release security findings are fixed or mitigated with regression coverage | The 128-file security review and six remediated findings are recorded in `security.md`. |
+| Compatibility, dependency, migration, performance, and support policies match the release configuration | Policies are published. The proposed initial migration note reflects that no 0.x tag or release exists. |
+| Publish a release candidate, review the spec and migration notes, resolve feedback | **Pending maintainer review.** No candidate has been published and no freeze decision has been made. |
+
 ## Support and migration limits
 
 - The host support matrix covers Linux x64 on Node.js 22 and 24, Linux arm64, macOS x64 and arm64, and Windows x64 and arm64 on Node.js 24.
