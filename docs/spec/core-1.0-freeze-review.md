@@ -4,9 +4,9 @@
 
 ## Proposed decision
 
-Freeze the implemented language contract in [`core-v0.md`](core-v0.md) as the first stable OMNI core specification. Keep that file as the source of truth. A core specification freeze would stabilize syntax and specified behavior; it would not claim that OMNI's full domain frameworks or production toolchain are complete. Those remain Phase 8 work in the [roadmap](../roadmap.md).
+Freeze the implemented language syntax and semantics in [`core-v0.md`](core-v0.md) as the first stable OMNI core specification. Keep that file as the source of truth. Freeze the four current profile contracts separately as described in [`profiles.md`](../profiles.md) and [`profiles.json`](../../conformance/profiles.json): an incompatible profile tuple requires a new versioned profile identifier. A broader compatibility model across profile versions is not specified yet. A core specification freeze would not claim that OMNI's full domain frameworks or production toolchain are complete; those remain Phase 8 work in the [roadmap](../roadmap.md).
 
-The freeze would exclude features listed in `core-v0.md` under **Explicitly not specified yet**, including generics, type aliases, async, exceptions, memory ownership, configurable effect declarations, and a production native machine-code engine. Adding those later would require a versioned specification update and conformance coverage.
+The freeze would exclude features listed in `core-v0.md` under **Explicitly not specified yet**, including generics, type aliases, async, exceptions, memory ownership, configurable effect declarations, a general compatibility model across profile versions, broader web and embedded support, and a production native machine-code engine. Adding those later would require a versioned specification update and conformance coverage.
 
 ## Evidence for review
 
@@ -22,13 +22,13 @@ The freeze would exclude features listed in `core-v0.md` under **Explicitly not 
 - The embedded target builds freestanding C and runs in the simulator; no physical boards or board support packages are declared.
 - Native C ABI code executes with host permissions and must be reviewed and trusted. OMNI does not claim that it is sandboxed.
 - Package installation and the production domain frameworks remain deferred.
-- Pre-1.0 OMNI has no general source or binary compatibility guarantee. This candidate proposes no migration guarantee for programs that depend on unspecified behavior; supported core behavior must match the maintained conformance fixtures.
+- Pre-1.0 OMNI has no general source or binary compatibility guarantee. The proposed freeze makes no migration guarantee for programs that depend on unspecified behavior; supported core behavior must match the maintained conformance fixtures.
 
 ## Maintainer review required
 
 Before publishing a core 1.0.0 release candidate, review these points:
 
-1. Is the implemented core, as specified in `core-v0.md`, a suitable stable foundation for Phase 8 frameworks while keeping advanced features explicitly out of scope?
+1. Are the core syntax and semantics plus the four current versioned profile contracts a suitable stable foundation for Phase 8 frameworks? Is the current rule for incompatible profile tuples sufficient, with a broader cross-version compatibility model deferred?
 2. Are the host, web, embedded, native-code, and package limits above accurate and clear enough to prevent unsupported production claims?
 3. Does the pre-1.0 compatibility statement give current users enough migration guidance, or should a concrete before/after migration note be added before the candidate?
 
