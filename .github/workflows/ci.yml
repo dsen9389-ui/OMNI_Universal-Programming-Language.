@@ -45,9 +45,23 @@ jobs:
             node: 24
     steps:
       - name: Check out OMNI
+        if: runner.os != 'Windows'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           path: omni
+
+      - name: Check out OMNI on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        working-directory: ${{ runner.temp }}
+        run: |
+          New-Item -ItemType Directory -Path omni -Force | Out-Null
+          Push-Location omni
+          git init --quiet
+          git remote add origin "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY.git"
+          git fetch --depth=1 origin "$env:GITHUB_REF"
+          git checkout --detach FETCH_HEAD
+          Pop-Location
 
       - name: Set up supported Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -57,29 +71,38 @@ jobs:
 
       - name: Install checksum-verified Zig
         run: node scripts/install-zig.mjs
+        working-directory: ${{ runner.os == 'Windows' && format('{0}/omni', runner.temp) || 'omni' }}
         env:
           OMNI_ZIG_VERSION: 0.17.0
 
       - name: Check JavaScript syntax
         run: npm run check:syntax
+        working-directory: ${{ runner.os == 'Windows' && format('{0}/omni', runner.temp) || 'omni' }}
 
       - name: Check documented host matrix against CI
         run: npm run check:support-matrix
+        working-directory: ${{ runner.os == 'Windows' && format('{0}/omni', runner.temp) || 'omni' }}
 
       - name: Run regression tests
         run: npm test
+        working-directory: ${{ runner.os == 'Windows' && format('{0}/omni', runner.temp) || 'omni' }}
 
       - name: Run language conformance suite
         run: npm run test:conformance
+        working-directory: ${{ runner.os == 'Windows' && format('{0}/omni', runner.temp) || 'omni' }}
 
       - name: Fuzz parser, checker, and portable engines with deterministic inputs
         run: npm run fuzz
+        working-directory: ${{ runner.os == 'Windows' && format('{0}/omni', runner.temp) || 'omni' }}
 
       - name: Record comparable engine benchmark samples
         run: node scripts/benchmark.mjs --samples 5 --warmups 1
+        working-directory: ${{ runner.os == 'Windows' && format('{0}/omni', runner.temp) || 'omni' }}
 
       - name: Check the maintained OMNI test example formatting
         run: node bin/omni.mjs fmt examples/tooling-tests/tests/addition.test.om --check
+        working-directory: ${{ runner.os == 'Windows' && format('{0}/omni', runner.temp) || 'omni' }}
 
       - name: Run the maintained OMNI test example
         run: node bin/omni.mjs test examples/tooling-tests/tests --engine javascript
+        working-directory: ${{ runner.os == 'Windows' && format('{0}/omni', runner.temp) || 'omni' }}
