@@ -2,6 +2,8 @@
 
 **Status:** prepared for maintainer review; the specification is not frozen and no release candidate has been published.
 
+The proposed release-note artifact is [`OMNI Core Specification 1.0.0-rc.1`](../releases/omni-core-v1.0.0-rc.1.md). Its tag is not published yet.
+
 ## Proposed decision
 
 Freeze the implemented language syntax and semantics in [`core-v0.md`](core-v0.md) as the first stable OMNI core specification. Keep that file as the source of truth. Freeze the four current profile contracts separately as described in [`profiles.md`](../profiles.md) and [`profiles.json`](../../conformance/profiles.json): an incompatible profile tuple requires a new versioned profile identifier. A broader compatibility model across profile versions is not specified yet. A core specification freeze would not claim that OMNI's full domain frameworks or production toolchain are complete; those remain Phase 8 work in the [roadmap](../roadmap.md).
