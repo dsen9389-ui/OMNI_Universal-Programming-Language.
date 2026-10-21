@@ -44,6 +44,12 @@ jobs:
             runner: windows-11-arm
             node: 24
     steps:
+      - name: Prepare Windows workspace directory
+        if: runner.os == 'Windows'
+        shell: pwsh
+        working-directory: ${{ runner.temp }}
+        run: New-Item -ItemType Directory -Path $env:GITHUB_WORKSPACE -Force | Out-Null
+
       - name: Check out OMNI
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
