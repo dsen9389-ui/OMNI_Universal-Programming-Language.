@@ -1,6 +1,6 @@
 # OMNI operational policies
 
-These policies define how OMNI makes and supports production claims. The current bootstrap release is pre-1.0; passing local checks does not imply that every listed platform has completed hosted CI or that a target has been tested on physical hardware.
+These policies define how OMNI makes and supports production claims. The current bootstrap release is pre-1.0. Hosted CI evidence covers every declared toolchain host; embedded execution is verified in the simulator, and no physical board support is declared.
 
 ## Performance
 

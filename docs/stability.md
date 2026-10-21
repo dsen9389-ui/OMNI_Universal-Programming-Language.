@@ -1,6 +1,6 @@
 # OMNI stability and specification policy
 
-OMNI remains pre-1.0 until the Phase 7 exit condition in the [roadmap](roadmap.md) is met. The current implementation reference is [`core-v0.md`](spec/core-v0.md); passing local checks is not a compatibility guarantee for every platform.
+OMNI remains pre-1.0 until the 1.0 specification freeze criteria below are met. The Phase 7 hardening and hosted platform evidence is recorded in the [roadmap](roadmap.md) and [support matrix](support-matrix.md). The current implementation reference is [`core-v0.md`](spec/core-v0.md); passing checks do not imply support for undeclared platforms or physical embedded boards.
 
 ## Before 1.0
 
@@ -11,6 +11,8 @@ OMNI remains pre-1.0 until the Phase 7 exit condition in the [roadmap](roadmap.m
 - A platform is verified only after its declared CI row and relevant target-specific checks pass. A configured but unrun job is not platform evidence.
 
 ## 1.0 specification freeze
+
+The current proposed freeze scope and maintainer questions are in the [core 1.0 freeze review](spec/core-1.0-freeze-review.md). The document is a review packet, not a published candidate or a stable specification.
 
 Freeze the first stable core specification only when all of these are true:
 
