@@ -236,4 +236,4 @@ The diagnostic codes are part of the core contract; message wording may be clari
 
 ## Explicitly not specified yet
 
-General-purpose generics, type aliases, async, exceptions, memory ownership, configurable effect declarations, versioned profile compatibility, broader web and embedded support, and a production native machine-code engine require future specification work.
+General-purpose generics, type aliases, async, exceptions, memory ownership, configurable effect declarations, a full compatibility, deprecation, and migration policy across profile versions, broader web and embedded support, and a production native machine-code engine require future specification work. The current profile rule is explicit: an incompatible profile tuple needs a new versioned profile identifier.
