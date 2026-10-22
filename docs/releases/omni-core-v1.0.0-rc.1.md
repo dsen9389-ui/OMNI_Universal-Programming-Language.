@@ -1,8 +1,9 @@
 # OMNI Core Specification 1.0.0-rc.1
 
-**Release type:** proposed specification pre-release; not yet published.  
-**Proposed tag:** `omni-core-v1.0.0-rc.1`  
-**Status:** review candidate only. The core is not frozen, and this is not an OMNI toolchain or framework release.
+- **Release type:** specification pre-release.
+- **Tag:** [`omni-core-v1.0.0-rc.1`](https://github.com/dsen9389-ui/OMNI_Universal-Programming-Language./releases/tag/omni-core-v1.0.0-rc.1)
+- **Published:** 2026-10-22 from commit `2c631c6051f3e105f4f713ab1437cb3a8631e682`.
+- **Status:** public review candidate. The core is not frozen, and this is not an OMNI toolchain or framework release.
 
 ## Purpose
 
@@ -12,13 +13,13 @@ This candidate proposes the first stable OMNI core language specification after 
 
 - Confirm the core syntax and semantics are a suitable stable foundation for the planned frameworks.
 - Confirm the four current profile contracts and the rule that an incompatible tuple gets a new versioned profile identifier.
-- Confirm the documented support limits and the proposed migration note below.
+- Confirm the documented support limits and the migration note below.
 
 The freeze excludes the features listed in `core-v0.md` as not yet specified, including general-purpose generics, async, exceptions, memory ownership, broad cross-version profile migration policy, broader web and embedded support, and a production native machine-code engine.
 
 ## Verification
 
-- Hosted CI run [39627573521](https://github.com/dsen9389-ui/OMNI_Universal-Programming-Language./actions/runs/39627573521) passed all seven declared host/runtime rows.
+- Hosted CI run [39715305781](https://github.com/dsen9389-ui/OMNI_Universal-Programming-Language./actions/runs/39715305781) passed all seven declared host/runtime rows for the published commit.
 - The maintained gates include regression tests, language conformance, deterministic fuzzing, formatting, the OMNI test example, syntax checks, and repeatable web and embedded builds.
 - Security review and remediation evidence is in [`security.md`](../security.md).
 - Full freeze readiness and open maintainer questions are in the [review packet](../spec/core-1.0-freeze-review.md).
@@ -32,10 +33,10 @@ The freeze excludes the features listed in `core-v0.md` as not yet specified, in
 - Native C ABI code is trusted and unsandboxed.
 - Package installation and production domain frameworks remain future work.
 
-## Proposed migration note
+## Migration note
 
-OMNI has no published 0.x tag or GitHub release, and the npm package is private. There is no released 0.x compatibility baseline. Check pre-release programs against the stable core specification and update code that relies on unspecified behavior; no source or binary migration guarantee is provided.
+OMNI has no released 0.x compatibility baseline, and the npm package is private. Check pre-release programs against the candidate core specification and update code that relies on unspecified behavior; no source or binary migration guarantee is provided.
 
 ## Candidate status
 
-This document is a draft release note. Publish it as a prerelease only after the maintainer confirms the scope and migration note. Gather and resolve compatibility-affecting feedback before declaring the core specification stable.
+This document records the published prerelease. Gather and resolve compatibility-affecting feedback, including the maintainer review questions in the freeze packet, before declaring the core specification stable.

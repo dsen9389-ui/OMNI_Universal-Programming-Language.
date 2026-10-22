@@ -12,7 +12,7 @@ OMNI remains pre-1.0 until the 1.0 specification freeze criteria below are met. 
 
 ## 1.0 specification freeze
 
-The proposed freeze scope and maintainer questions are in the [core 1.0 freeze review](spec/core-1.0-freeze-review.md). Draft release notes for [OMNI Core Specification 1.0.0-rc.1](releases/omni-core-v1.0.0-rc.1.md) are prepared but unpublished; no stable specification or release candidate exists yet.
+The proposed freeze scope and maintainer questions are in the [core 1.0 freeze review](spec/core-1.0-freeze-review.md). The [OMNI Core Specification 1.0.0-rc.1 prerelease](releases/omni-core-v1.0.0-rc.1.md) is published for review; no stable specification exists yet.
 
 Freeze the first stable core specification only when all of these are true:
 

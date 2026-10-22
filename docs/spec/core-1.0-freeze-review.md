@@ -1,8 +1,8 @@
 # OMNI core 1.0 freeze review
 
-**Status:** prepared for maintainer review; the specification is not frozen and no release candidate has been published.
+**Status:** published release candidate under maintainer review; the specification is not frozen and compatibility-affecting feedback remains open.
 
-The proposed release-note artifact is [`OMNI Core Specification 1.0.0-rc.1`](../releases/omni-core-v1.0.0-rc.1.md). Its tag is not published yet.
+The published release-note artifact is [`OMNI Core Specification 1.0.0-rc.1`](../releases/omni-core-v1.0.0-rc.1.md), tagged [`omni-core-v1.0.0-rc.1`](https://github.com/dsen9389-ui/OMNI_Universal-Programming-Language./releases/tag/omni-core-v1.0.0-rc.1) at commit `2c631c6051f3e105f4f713ab1437cb3a8631e682`.
 
 ## Proposed decision
 
@@ -25,8 +25,8 @@ The freeze would exclude features listed in `core-v0.md` under **Explicitly not 
 | Regression, conformance, fuzz, formatting, tooling, and release-build gates pass | [CI run 39625986073](https://github.com/dsen9389-ui/OMNI_Universal-Programming-Language./actions/runs/39625986073) passed all seven host/runtime rows. |
 | Every advertised platform has hosted evidence; embedded scope is stated | All six declared host/architecture combinations are verified. Embedded support is simulator-only; no physical boards are declared. |
 | Release security findings are fixed or mitigated with regression coverage | The 128-file security review and six remediated findings are recorded in `security.md`. |
-| Compatibility, dependency, migration, performance, and support policies match the release configuration | Policies are published. The proposed initial migration note reflects that no 0.x tag or release exists. |
-| Publish a release candidate, review the spec and migration notes, resolve feedback | **Pending maintainer review.** No candidate has been published and no freeze decision has been made. |
+| Compatibility, dependency, migration, performance, and support policies match the release configuration | Policies are published. The initial migration note reflects that no 0.x release exists. |
+| Publish a release candidate, review the spec and migration notes, resolve feedback | The candidate is published. **Maintainer review and compatibility-affecting feedback are pending; no freeze decision has been made.** |
 
 ## Support and migration limits
 
@@ -36,14 +36,14 @@ The freeze would exclude features listed in `core-v0.md` under **Explicitly not 
 - Native C ABI code executes with host permissions and must be reviewed and trusted. OMNI does not claim that it is sandboxed.
 - Package installation and the production domain frameworks remain deferred.
 - Pre-1.0 OMNI has no general source or binary compatibility guarantee. The proposed freeze makes no migration guarantee for programs that depend on unspecified behavior; supported core behavior must match the maintained conformance fixtures.
-- GitHub currently has no published tags or releases, and the npm package is private. Proposed migration note: “OMNI has no released 0.x compatibility baseline. Check pre-release programs against the stable core specification and update any code that relied on unspecified behavior; no source or binary migration guarantee is provided.”
+- This is OMNI's first published release; there is no released 0.x compatibility baseline, and the npm package is private. The candidate migration note is: “OMNI has no released 0.x compatibility baseline. Check pre-release programs against the candidate core specification and update any code that relied on unspecified behavior; no source or binary migration guarantee is provided.”
 
-## Maintainer review required
+## Maintainer review required before declaring the core stable
 
-Before publishing a core 1.0.0 release candidate, review these points:
+Before declaring a core 1.0.0 specification stable, review these points:
 
 1. Are the core syntax and semantics plus the four current versioned profile contracts a suitable stable foundation for Phase 8 frameworks? Is the current rule for incompatible profile tuples sufficient, with a broader cross-version compatibility model deferred?
 2. Are the host, web, embedded, native-code, and package limits above accurate and clear enough to prevent unsupported production claims?
-3. Do you distribute pre-release builds outside this repository to users who need a before/after migration guide? There are no published tags or releases, so the note above assumes there is no supported 0.x migration baseline.
+3. Do you distribute pre-release builds outside this repository to users who need a before/after migration guide? No 0.x release exists, so the note above assumes there is no supported 0.x migration baseline.
 
-After review, resolve any compatibility-affecting feedback, publish a core-specification release candidate, gather feedback, and only then mark the core specification stable. This review packet is not itself that release candidate.
+After review, resolve compatibility-affecting feedback from the published candidate and only then mark the core specification stable. This packet records the review gate; it does not make the freeze decision.
